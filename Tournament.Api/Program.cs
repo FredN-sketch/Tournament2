@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Service.Contracts;
 using System.Threading.Tasks;
 using Tournament.Api.Extensions;
 using Tournament.Core.Repositories;
 using Tournament.Data.Data;
 using Tournament.Data.Repositories;
+using Tournament.Services;
 
 namespace Tournament.Api;
 
@@ -26,6 +28,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddAutoMapper(typeof(TournamentMappings)); // Register AutoMapper for mapping DTOs and entities.
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); // Register the UnitOfWork service.
+        builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
         var app = builder.Build();
         await app.SeedDataAsync(); // Seed the database with initial data. To be implemented in the ApplicationBuilderExtensions class.

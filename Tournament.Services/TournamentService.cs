@@ -1,28 +1,40 @@
-﻿using Service.Contracts;
+﻿using AutoMapper;
+using Service.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tournament.Core.Dto;
 using Tournament.Core.Entities;
+using Tournament.Core.Repositories;
 
 namespace Tournament.Services
 {
     public class TournamentService : ITournamentService
     {
-        public Task<bool> AnyAsync(int id)
+        private IUnitOfWork _uow;
+        private readonly IMapper _mapper;
+        public TournamentService(IUnitOfWork uow, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _uow = uow;
+            _mapper = mapper;
+        }
+        public async Task<bool> AnyAsync(int id)
+        {
+            return await _uow.TournamentRepository.AnyAsync(id);
         }
 
-        public Task<IEnumerable<TournamentDetails>> GetAllAsync(bool includeGames = false, bool sortByTitle = false)
+        public Task<IEnumerable<TournamentDto>> GetAllAsync(bool includeGames = false, bool sortByTitle = false)
         {
-            throw new NotImplementedException();
+           // return _uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle);
+           return _mapper.Map<Task<IEnumerable<TournamentDto>>>(_uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle));
         }
 
-        public Task<TournamentDetails?> GetAsync(int id, bool includeGames = false)
+        public async Task<TournamentDto?> GetAsync(int id, bool includeGames = false)
         {
-            throw new NotImplementedException();
+            TournamentDetails? tournament = await _uow.TournamentRepository.GetAsync(id, includeGames);
+            return _mapper.Map<TournamentDto?>(tournament);
         }
     }
 }
