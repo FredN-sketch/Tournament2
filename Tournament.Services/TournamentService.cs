@@ -25,16 +25,38 @@ namespace Tournament.Services
             return await _uow.TournamentRepository.AnyAsync(id);
         }
 
-        public Task<IEnumerable<TournamentDto>> GetAllAsync(bool includeGames = false, bool sortByTitle = false)
+        public async Task<IEnumerable<TournamentDto>> GetAllAsync(bool includeGames = false, bool sortByTitle = false)
         {
-           // return _uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle);
-           return _mapper.Map<Task<IEnumerable<TournamentDto>>>(_uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle));
+            // return _uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle);
+            //  return _mapper.Map<Task<IEnumerable<TournamentDto>>>(_uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle));
+            return _mapper.Map<IEnumerable<TournamentDto>>(await _uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle));
         }
 
         public async Task<TournamentDto?> GetAsync(int id, bool includeGames = false)
         {
             TournamentDetails? tournament = await _uow.TournamentRepository.GetAsync(id, includeGames);
             return _mapper.Map<TournamentDto?>(tournament);
+        }
+
+        // CRUD operations
+        public void Add(TournamentDetails tournamentDetails)
+        {
+            _uow.TournamentRepository.Add(tournamentDetails);
+            _uow.CompleteAsync();
+        }
+        public void Update(TournamentDetails tournamentDetails)
+        {
+            _uow.TournamentRepository.Update(tournamentDetails);
+            _uow.CompleteAsync();
+        }
+        public void Remove(TournamentDetails tournamentDetails)
+        {
+            _uow.TournamentRepository.Remove(tournamentDetails);
+            _uow.CompleteAsync();
+        }
+        public async Task SaveChangesAsync()
+        {
+            await _uow.CompleteAsync();
         }
     }
 }
