@@ -13,7 +13,7 @@ namespace Tournament.Data.Data
     {
         public TournamentMappings()
         {
-            CreateMap<TournamentDetails, TournamentDto>().ReverseMap(); 
+            CreateMap<TournamentDetails, TournamentDto>().ReverseMap();
             CreateMap<Game, GameDto>().ReverseMap();
             CreateMap<GameCreateDto, Game>().ReverseMap();              
         }

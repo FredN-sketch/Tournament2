@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tournament.Core.Dto;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
 
@@ -12,33 +13,34 @@ namespace Tournament.Services
 {
     public class GameService : IGameService
     {
-        private IUnitOfWork uow;
-        private IMapper mapper;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
         public GameService(IUnitOfWork uow, IMapper mapper)
         {
-            this.uow = uow;
-            this.mapper = mapper;
+            _uow = uow;
+            _mapper = mapper;
         }
 
-        public Task<bool> AnyAsync(int id)
+        public async Task<bool> AnyAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _uow.GameRepository.AnyAsync(id);
         }
 
-        public Task<IEnumerable<Game>> GetAllAsync(bool sortByTitle = false)
+        public async Task<IEnumerable<GameDto>> GetAllAsync(bool sortByTitle = false)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<GameDto>>(await _uow.GameRepository.GetAllAsync(sortByTitle));
+              
         }
 
-        public Task<Game?> GetAsync(int id)
+        public async Task<GameDto?> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(id));               
         }
 
-        public Task<Game?> GetAsync(string title)
+        public async Task<GameDto?> GetAsync(string title)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(title));
         }
     }
 }

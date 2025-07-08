@@ -19,7 +19,7 @@ namespace Tournament.Api.Controllers
     [ApiController]
     public class TournamentDetailsController : ControllerBase
     {     
-        private readonly IMapper _mapper;
+       // private readonly IMapper _mapper;
         private readonly IServiceManager _serviceManager;
 
         //private readonly IUnitOfWork _uow;
@@ -61,35 +61,35 @@ namespace Tournament.Api.Controllers
 
         //PUT: api/TournamentDetails/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTournamentDetails(int id, TournamentDto dto)
-        {
-            if (id != dto.Id)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutTournamentDetails(int id, TournamentDto dto)
+        //{
+        //    if (id != dto.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var existingTournament = await _serviceManager.TournamentService.GetAsync(id);
-            if (existingTournament == null)
-            {
-                return NotFound("Tournament does not exist");
-            }
+        //    var existingTournament = await _serviceManager.TournamentService.GetAsync(id);
+        //    if (existingTournament == null)
+        //    {
+        //        return NotFound("Tournament does not exist");
+        //    }
 
-            _mapper.Map(dto, existingTournament);
+        //    _mapper.Map(dto, existingTournament);
 
 
-            try
-            {
-               // await _uow.CompleteAsync();
-              // await _serviceManager.TournamentService.
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+        //    try
+        //    {
+        //       // await _uow.CompleteAsync();
+        //      // await _serviceManager.TournamentService.
+        //    }
+        //    catch
+        //    {
+        //        return StatusCode(500);
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         // POST: api/TournamentDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

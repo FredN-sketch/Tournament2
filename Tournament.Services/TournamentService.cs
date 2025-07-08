@@ -13,7 +13,7 @@ namespace Tournament.Services
 {
     public class TournamentService : ITournamentService
     {
-        private IUnitOfWork _uow;
+        private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
         public TournamentService(IUnitOfWork uow, IMapper mapper)
         {
