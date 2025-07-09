@@ -20,4 +20,8 @@ namespace Tournament.Core.Request
         public bool IncludeGames { get; set; } = false;
         public bool SortByTitle { get; set; } = false;
     }
+    public class GameRequestParams : RequestParams
+    {
+        public bool SortByTitle { get; set; } = false;
+    }
 }

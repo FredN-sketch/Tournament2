@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Tournament.Core.Dto;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
+using Tournament.Core.Request;
 
 namespace Tournament.Services
 {
@@ -27,10 +28,17 @@ namespace Tournament.Services
             return await _uow.GameRepository.AnyAsync(id);
         }
 
-        public async Task<IEnumerable<GameDto>> GetAllAsync(bool sortByTitle = false)
+        //public async Task<IEnumerable<GameDto>> GetAllAsync(GameRequestParams requestParams)
+        //{
+        //    return _mapper.Map<IEnumerable<GameDto>>(await _uow.GameRepository.GetAllAsync(requestParams));
+
+        //}
+        public async Task<(IEnumerable<GameDto> gameDtos, MetaData metaData)> GetAllAsync(GameRequestParams requestParams)
         {
-            return _mapper.Map<IEnumerable<GameDto>>(await _uow.GameRepository.GetAllAsync(sortByTitle));
-              
+            var pagedList = await _uow.GameRepository.GetAllAsync(requestParams);
+            var gamesDto = _mapper.Map<IEnumerable<GameDto>>(pagedList.Items);
+            return (gamesDto, pagedList.MetaData);
+
         }
 
         public async Task<GameDto?> GetAsync(int id)

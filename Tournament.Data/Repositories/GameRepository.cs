@@ -8,6 +8,7 @@ using Tournament.Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Tournament.Data.Data;
 using System.Reflection.Metadata.Ecma335;
+using Tournament.Core.Request;
 
 namespace Tournament.Data.Repositories;
 
@@ -19,14 +20,14 @@ public class GameRepository : IGameRepository
     {
         _context = context;
     }
-    public async Task<IEnumerable<Game>> GetAllAsync(bool sortByTitle = false)
+    public async Task<PagedList<Game>> GetAllAsync(GameRequestParams requestParams)
     {
-        var games = await _context.Game            
-            .ToListAsync();
-        var sortedGames = sortByTitle
-            ? games.OrderBy(g => g.Title).ToList() 
-            : games;
-        return sortedGames;
+        //var games = await _context.Game            
+        //    .ToListAsync();
+        var sortedGames = requestParams.SortByTitle
+            ? _context.Game.AsQueryable().OrderBy(g => g.Title) 
+            : _context.Game.AsQueryable();
+        return await PagedList<Game>.CreateAsync(sortedGames, requestParams.PageNumber, requestParams.PageSize);
     }
     public async Task<Game?> GetAsync(int id)
     {

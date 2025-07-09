@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Tournament.Core.Dto;
 using Tournament.Core.Repositories;
+using Tournament.Core.Request;
 
 namespace Tournament.Presentation.Controllers
 {
@@ -23,12 +24,14 @@ namespace Tournament.Presentation.Controllers
 
         // GET: api/Games
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameDto>>> GetGame(bool sortByTitle)
+        public async Task<ActionResult<IEnumerable<GameDto>>> GetGame([FromQuery] GameRequestParams requestParams)
         {         
             //var games = _mapper.Map<IEnumerable<GameDto>>(await _uow.GameRepository.GetAllAsync(sortByTitle));
             
-            var games = await _serviceManager.GameService.GetAllAsync(sortByTitle);
-            return Ok(games);
+            //var games = await _serviceManager.GameService.GetAllAsync(requestParams);
+            //return Ok(games);
+            var gameDtos = await _serviceManager.GameService.GetAllAsync(requestParams);
+            return Ok(gameDtos);
         }
 
         // GET: api/Games/5
