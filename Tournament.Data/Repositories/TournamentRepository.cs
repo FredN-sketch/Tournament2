@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
-using Microsoft.EntityFrameworkCore;
+using Tournament.Core.Request;
 using Tournament.Data.Data;
-using System.Reflection.Metadata.Ecma335;
     
 namespace Tournament.Data.Repositories;
 
@@ -18,15 +19,26 @@ public class TournamentRepository : ITournamentRepository
     {
         _context = context;
     }
-    public async Task<IEnumerable<TournamentDetails>> GetAllAsync(bool includeGames = false, bool sortByTitle = false)
+  //  public async Task<IEnumerable<TournamentDetails>> GetAllAsync(bool includeGames = false, bool sortByTitle = false)
+   // public async Task<IEnumerable<TournamentDetails>> GetAllAsync(bool includeGames = false, bool sortByTitle = false)
+    public async Task<PagedList<TournamentDetails>> GetAllAsync(TournamentRequestParams requestParams)
     {
-        var tournaments = includeGames 
-            ? await _context.TournamentDetails.Include(t => t.Games).ToListAsync() 
-            : await _context.TournamentDetails.ToListAsync();
-        var sortedTournaments = sortByTitle 
-            ? tournaments.OrderBy(t => t.Title).ToList() 
+        //var tournaments = requestParams.IncludeGames 
+        //    ? await _context.TournamentDetails.Include(t => t.Games).ToListAsync() 
+        //    : await _context.TournamentDetails.ToListAsync();
+        //var sortedTournaments = requestParams.SortByTitle 
+        //    ? tournaments.OrderBy(t => t.Title).ToList() 
+        //    : tournaments;
+       
+        var tournaments = requestParams.IncludeGames
+           ? _context.TournamentDetails.AsQueryable().Include(t => t.Games)
+           : _context.TournamentDetails.AsQueryable();
+        var sortedTournaments = requestParams.SortByTitle
+            ? tournaments.OrderBy(t => t.Title)
             : tournaments;
-        return sortedTournaments;
+       
+        // return sortedTournaments;
+        return await PagedList<TournamentDetails>.CreateAsync(sortedTournaments, requestParams.PageNumber, requestParams.PageSize);
     }
     public async Task<TournamentDetails?> GetAsync(int id, bool includeGames = false)
     {

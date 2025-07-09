@@ -3,6 +3,7 @@ using Tournament.Core.Repositories;
 using AutoMapper;
 using Tournament.Core.Dto;
 using Service.Contracts;
+using Tournament.Core.Request;
 
 namespace Tournament.Presentation.Controllers
 {
@@ -23,13 +24,13 @@ namespace Tournament.Presentation.Controllers
 
         // GET: api/TournamentDetails
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TournamentDto>>> GetTournamentDetails(bool includeGames, bool sortByTitle)
+        public async Task<ActionResult<IEnumerable<TournamentDto>>> GetTournamentDetails([FromQuery] TournamentRequestParams requestParams)
         { 
             //var tournaments = includeGames 
             //    ? _mapper.Map<IEnumerable<TournamentDto>>(await _uow.TournamentRepository.GetAllAsync(true, sortByTitle))
             //    : _mapper.Map<IEnumerable<TournamentDto>>(await _uow.TournamentRepository.GetAllAsync(false, sortByTitle));
 
-            var tournamentDtos = await _serviceManager.TournamentService.GetAllAsync(includeGames, sortByTitle);
+            var tournamentDtos = await _serviceManager.TournamentService.GetAllAsync(requestParams);
             return Ok(tournamentDtos);
         }
 
