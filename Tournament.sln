@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tournament.Services", "Tour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service.Contracts", "Service.Contracts\Service.Contracts.csproj", "{C49BE503-F2FF-4147-8DAE-7BBC8AD2B553}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tournament.Presentation", "Tournaments.Presentation\Tournament.Presentation.csproj", "{7F9DC582-5931-4DAC-968B-81E4E3AAE852}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{C49BE503-F2FF-4147-8DAE-7BBC8AD2B553}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C49BE503-F2FF-4147-8DAE-7BBC8AD2B553}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C49BE503-F2FF-4147-8DAE-7BBC8AD2B553}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F9DC582-5931-4DAC-968B-81E4E3AAE852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F9DC582-5931-4DAC-968B-81E4E3AAE852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F9DC582-5931-4DAC-968B-81E4E3AAE852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F9DC582-5931-4DAC-968B-81E4E3AAE852}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

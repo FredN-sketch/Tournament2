@@ -1,20 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Service.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Tournament.Core.Dto;
-using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
-using Tournament.Data.Data;
-using Tournament.Services;
 
-namespace Tournament.Api.Controllers
+namespace Tournament.Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -58,7 +48,7 @@ namespace Tournament.Api.Controllers
         public async Task<ActionResult<GameDto>> GetGame(int id, [FromQuery] string? searchTitle=null)
         {
 
-            var game = (string.IsNullOrEmpty(searchTitle))
+            var game = string.IsNullOrEmpty(searchTitle)
                 //? _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(id))
                 //: _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(searchTitle));           
                 ? await _serviceManager.GameService.GetAsync(id)
