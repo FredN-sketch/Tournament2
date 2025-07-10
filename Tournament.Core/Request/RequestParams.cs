@@ -12,7 +12,7 @@ namespace Tournament.Core.Request
         [Range(1, int.MaxValue)]
         public int PageNumber { get; set; } = 1;
 
-        [Range(2, 20)]
+        [Range(2, int.MaxValue)]
         public int PageSize { get; set; } = 5;
     }
     public class TournamentRequestParams : RequestParams
