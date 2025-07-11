@@ -10,5 +10,7 @@ namespace Service.Contracts
     {
         IGameService GameService { get; }
         ITournamentService TournamentService { get; }
+
+      
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Tournament.Core.Dto;
+using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
 using Tournament.Core.Request;
 
@@ -89,13 +90,28 @@ namespace Tournament.Presentation.Controllers
         //    {
         //        return StatusCode(500);
         //    }
-          
+
         //    return NoContent();
         //}
 
-        // POST: api/Games
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
+        //POST: api/Games
+        //To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<GameDto>> PostGame(GameCreateDto dto)
+        {
+            var createdGame = await _serviceManager.GameService.PostGame(dto);
+            try
+            {
+               await _serviceManager.GameService.CompleteAsync();
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+
+           
+            return CreatedAtAction(nameof(GetGame), new { id = createdGame.Id }, createdGame);
+        }
         //public async Task<ActionResult<GameDto>> PostGame(GameCreateDto dto)
         //{
         //    var game = _mapper.Map<Game>(dto);
@@ -148,24 +164,24 @@ namespace Tournament.Presentation.Controllers
         //    }
         //    var existingGame = await _uow.GameRepository.GetAsync(gameId);
         //    if (existingGame == null)
-            //{
-            //    return NotFound("Game does not exist");
-            //}
-            //var dto = _mapper.Map<GameCreateDto>(existingGame);
-            //patchDoc.ApplyTo(dto, ModelState);
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
-            //_mapper.Map(dto, existingGame);
-            //try
-            //{
-            //    await _uow.CompleteAsync();
-            //}
-            //catch
-            //{
-            //    return StatusCode(500);
-            //}
+        //{
+        //    return NotFound("Game does not exist");
+        //}
+        //var dto = _mapper.Map<GameCreateDto>(existingGame);
+        //patchDoc.ApplyTo(dto, ModelState);
+        //if (!ModelState.IsValid)
+        //{
+        //    return BadRequest(ModelState);
+        //}
+        //_mapper.Map(dto, existingGame);
+        //try
+        //{
+        //    await _uow.CompleteAsync();
+        //}
+        //catch
+        //{
+        //    return StatusCode(500);
+        //}
         //    return NoContent();
         //}
 

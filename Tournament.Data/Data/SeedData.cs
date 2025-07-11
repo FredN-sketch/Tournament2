@@ -73,7 +73,7 @@ public static class SeedData
     public static List<Game> GenerateGames(string tournamentTitle)
     {
         var games = new List<Game>();
-        for (int i = 1; i <= 30; i++)
+        for (int i = 1; i < 10; i++)
         {
             games.Add(new Game
             {

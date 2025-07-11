@@ -43,12 +43,41 @@ namespace Tournament.Services
 
         public async Task<GameDto?> GetAsync(int id)
         {
-            return _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(id));               
+            return _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(id));
         }
 
         public async Task<GameDto?> GetAsync(string title)
         {
             return _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(title));
+        }
+
+        public async Task<GameDto> PostGame(GameCreateDto dto)
+        {
+            var game = _mapper.Map<Game>(dto);
+            _uow.GameRepository.Add(game);
+            await _uow.CompleteAsync();
+            return _mapper.Map<GameDto>(game);
+        }
+        // CRUD operations
+        public void Add(Game game)
+        {
+            _uow.GameRepository.Add(game);
+            _uow.CompleteAsync();
+        }
+        public void Update(Game game)
+        {
+            _uow.GameRepository.Update(game);
+            _uow.CompleteAsync();
+        }
+        public void Remove(Game game)
+        {
+            _uow.GameRepository.Remove(game);
+            _uow.CompleteAsync();
+        }
+
+        public async Task CompleteAsync()
+        {
+            await _uow.CompleteAsync();
         }
     }
 }
