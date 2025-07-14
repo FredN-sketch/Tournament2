@@ -26,12 +26,9 @@ namespace Tournament.Services
             return await _uow.TournamentRepository.AnyAsync(id);
         }
 
-        //   public async Task<IEnumerable<TournamentDto>> GetAllAsync(TournamentRequestParams requestParams)
+    
         public async Task<(IEnumerable<TournamentDto> tournamentDtos, MetaData metaData)> GetAllAsync(TournamentRequestParams requestParams)
-        {
-            // return _uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle);
-            //  return _mapper.Map<Task<IEnumerable<TournamentDto>>>(_uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle));
-            //return _mapper.Map<IEnumerable<TournamentDto>>(await _uow.TournamentRepository.GetAllAsync(includeGames, sortByTitle));
+        {          
             var pagedList = await _uow.TournamentRepository.GetAllAsync(requestParams);
             var tournamentsDto = _mapper.Map<IEnumerable<TournamentDto>>(pagedList.Items);
             return (tournamentsDto, pagedList.MetaData);

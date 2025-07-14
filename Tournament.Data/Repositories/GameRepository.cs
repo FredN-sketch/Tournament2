@@ -21,9 +21,7 @@ public class GameRepository : IGameRepository
         _context = context;
     }
     public async Task<PagedList<Game>> GetAllAsync(GameRequestParams requestParams)
-    {
-        //var games = await _context.Game            
-        //    .ToListAsync();
+    {       
         var sortedGames = requestParams.SortByTitle
             ? _context.Game.AsQueryable().OrderBy(g => g.Title) 
             : _context.Game.AsQueryable();

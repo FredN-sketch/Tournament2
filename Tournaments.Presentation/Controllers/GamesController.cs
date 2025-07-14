@@ -12,49 +12,27 @@ namespace Tournament.Presentation.Controllers
     [ApiController]
     public class GamesController : ControllerBase
     {
-        private readonly IMapper _mapper;
-      //  private readonly IUnitOfWork _uow;
         private readonly IServiceManager _serviceManager;
 
-        public GamesController(IServiceManager serviceManager, IMapper mapper, IUnitOfWork uow)
+        public GamesController(IServiceManager serviceManager)
         {
-            _serviceManager = serviceManager;
-            //_mapper = mapper;
-            //_uow = uow;
+            _serviceManager = serviceManager;        
         }
 
         // GET: api/Games
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GameDto>>> GetGame([FromQuery] GameRequestParams requestParams)
-        {         
-            //var games = _mapper.Map<IEnumerable<GameDto>>(await _uow.GameRepository.GetAllAsync(sortByTitle));
-            
-            //var games = await _serviceManager.GameService.GetAllAsync(requestParams);
-            //return Ok(games);
+        {                  
             var gameDtos = await _serviceManager.GameService.GetAllAsync(requestParams);
             return Ok(gameDtos);
         }
 
-        // GET: api/Games/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<GameDto>> GetGame(int id)
-        //{
-        //    var game = _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(id));
-
-        //    if (game == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return game;
-        //}
+        // GET: api/Games/5     
         [HttpGet("{id?}")]
         public async Task<ActionResult<GameDto>> GetGame(int id, [FromQuery] string? searchTitle=null)
         {
 
-            var game = string.IsNullOrEmpty(searchTitle)
-                //? _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(id))
-                //: _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(searchTitle));           
+            var game = string.IsNullOrEmpty(searchTitle)                       
                 ? await _serviceManager.GameService.GetAsync(id)
                 : await _serviceManager.GameService.GetAsync(searchTitle);
             if (game == null)
@@ -112,22 +90,7 @@ namespace Tournament.Presentation.Controllers
            
             return CreatedAtAction(nameof(GetGame), new { id = createdGame.Id }, createdGame);
         }
-        //public async Task<ActionResult<GameDto>> PostGame(GameCreateDto dto)
-        //{
-        //    var game = _mapper.Map<Game>(dto);
-        //    _uow.GameRepository.Add(game);
-        //    try
-        //    {
-        //        await _uow.CompleteAsync();
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(500);
-        //    }
-
-        //    var createdGame = _mapper.Map<GameDto>(game);
-        //    return CreatedAtAction(nameof(GetGame), new { id = game.Id }, createdGame);
-        //}
+      
 
         // DELETE: api/Games/5
         //[HttpDelete("{id}")]
@@ -186,8 +149,7 @@ namespace Tournament.Presentation.Controllers
         //}
 
         private async Task<bool> GameExistsAsync(int id)
-        {
-          //  return await _uow.GameRepository.AnyAsync(id);
+        {      
             return await _serviceManager.GameService.AnyAsync(id);
         }
     }

@@ -12,7 +12,7 @@ namespace Service.Contracts
     public interface ITournamentService
     {
         //Todo: TrackChanges=false?
-     //   Task<IEnumerable<TournamentDto>> GetAllAsync(TournamentRequestParams requestParams);
+    
         Task<(IEnumerable<TournamentDto> tournamentDtos, MetaData metaData)> GetAllAsync(TournamentRequestParams requestParams);
         Task<TournamentDto?> GetAsync(int id, bool includeGames = false);
         Task<bool> AnyAsync(int id);

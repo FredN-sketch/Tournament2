@@ -28,11 +28,7 @@ namespace Tournament.Services
             return await _uow.GameRepository.AnyAsync(id);
         }
 
-        //public async Task<IEnumerable<GameDto>> GetAllAsync(GameRequestParams requestParams)
-        //{
-        //    return _mapper.Map<IEnumerable<GameDto>>(await _uow.GameRepository.GetAllAsync(requestParams));
-
-        //}
+        
         public async Task<(IEnumerable<GameDto> gameDtos, MetaData metaData)> GetAllAsync(GameRequestParams requestParams)
         {
             var pagedList = await _uow.GameRepository.GetAllAsync(requestParams);
