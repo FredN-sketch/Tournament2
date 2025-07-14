@@ -14,22 +14,17 @@ namespace Tournament.Presentation.Controllers
        // private readonly IMapper _mapper;
         private readonly IServiceManager _serviceManager;
 
-        //private readonly IUnitOfWork _uow;
-        public TournamentDetailsController(IServiceManager serviceManager, IMapper mapper, IUnitOfWork uow)
+        
+        public TournamentDetailsController(IServiceManager serviceManager)
         {
             _serviceManager = serviceManager;
-            //_mapper = mapper;
-            //_uow = uow;
+           
         }
 
         // GET: api/TournamentDetails
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TournamentDto>>> GetTournamentDetails([FromQuery] TournamentRequestParams requestParams)
-        { 
-            //var tournaments = includeGames 
-            //    ? _mapper.Map<IEnumerable<TournamentDto>>(await _uow.TournamentRepository.GetAllAsync(true, sortByTitle))
-            //    : _mapper.Map<IEnumerable<TournamentDto>>(await _uow.TournamentRepository.GetAllAsync(false, sortByTitle));
-
+        {          
             var tournamentDtos = await _serviceManager.TournamentService.GetAllAsync(requestParams);
             return Ok(tournamentDtos);
         }
@@ -37,17 +32,12 @@ namespace Tournament.Presentation.Controllers
         // GET: api/TournamentDetails/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TournamentDto>> GetTournamentDetails(int id, bool includeGames)
-        {
-           
-            //var tournamentDetails = includeGames
-            //    ? _mapper.Map<TournamentDto>(await _uow.TournamentRepository.GetAsync(id, true))
-            //    : _mapper.Map<TournamentDto>(await _uow.TournamentRepository.GetAsync(id));
+        {           
             var tournamentDetails = await _serviceManager.TournamentService.GetAsync(id, includeGames);
             if (tournamentDetails == null)
             {
                 return NotFound();
             }
-
             return Ok(tournamentDetails);
         }
 

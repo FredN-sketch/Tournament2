@@ -31,6 +31,7 @@ public class Program
         builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
         var app = builder.Build();
+        app.ConfigureExceptionHandler();
         await app.SeedDataAsync(); // Seed the database with initial data. To be implemented in the ApplicationBuilderExtensions class.
 
         // Configure the HTTP request pipeline.

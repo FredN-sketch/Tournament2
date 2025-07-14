@@ -39,7 +39,12 @@ namespace Tournament.Services
 
         public async Task<GameDto?> GetAsync(int id)
         {
-            return _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(id));
+            var game = await _uow.GameRepository.GetAsync(id);
+            if (game == null)
+            {
+                throw new Tournament.Core.Exceptions.GameNotFoundException(id);
+            }
+            return _mapper.Map<GameDto>(game);
         }
 
         public async Task<GameDto?> GetAsync(string title)
