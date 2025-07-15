@@ -29,4 +29,9 @@ public class GameNotFoundException : NotFoundException
     {
 
     }
+    public GameNotFoundException(string title) : base($"The game with title {title} is not found")
+    {
+
+    }
+
 }

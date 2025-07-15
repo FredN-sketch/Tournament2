@@ -38,7 +38,12 @@ public static class ExceptionMiddleware
                 title: tournamentNotFoundException.Title,
                 detail: tournamentNotFoundException.Message,
                 instance: context.Request.Path),
-
+             GameNotFoundException gameNotFoundException => problemDetailsFactory.CreateProblemDetails(
+                context,
+                StatusCodes.Status404NotFound,
+                title: gameNotFoundException.Title,
+                detail: gameNotFoundException.Message,
+                instance: context.Request.Path),
             _ => problemDetailsFactory.CreateProblemDetails(
                 context,
                 StatusCodes.Status500InternalServerError,
