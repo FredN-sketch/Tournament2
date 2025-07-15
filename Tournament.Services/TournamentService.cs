@@ -43,6 +43,10 @@ namespace Tournament.Services
             }
             return _mapper.Map<TournamentDto?>(tournament);
         }
+        public async Task<int> CountGames(int tournamentId)
+        {
+            return await _uow.TournamentRepository.CountGames(tournamentId);
+        }
 
         // CRUD operations
         public void Add(TournamentDetails tournamentDetails)

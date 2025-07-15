@@ -44,6 +44,13 @@ public static class ExceptionMiddleware
                 title: gameNotFoundException.Title,
                 detail: gameNotFoundException.Message,
                 instance: context.Request.Path),
+              MaxInstancesException maxInstancesException => problemDetailsFactory.CreateProblemDetails(
+                context,
+                StatusCodes.Status406NotAcceptable,
+                title: maxInstancesException.Title,
+                detail: maxInstancesException.Message,
+                instance: context.Request.Path),
+
             _ => problemDetailsFactory.CreateProblemDetails(
                 context,
                 StatusCodes.Status500InternalServerError,

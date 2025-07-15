@@ -60,6 +60,11 @@ namespace Tournament.Services
         public async Task<GameDto> PostGame(GameCreateDto dto)
         {
             var game = _mapper.Map<Game>(dto);
+            int tournamentNrOfGames = await _uow.TournamentRepository.CountGames(dto.TournamentDetailsId);
+            if (tournamentNrOfGames >= TournamentDetails.MaxGames)
+            {
+                throw new Tournament.Core.Exceptions.MaxGamesException(dto.TournamentDetailsId);
+            }
             _uow.GameRepository.Add(game);
             await _uow.CompleteAsync();
             return _mapper.Map<GameDto>(game);

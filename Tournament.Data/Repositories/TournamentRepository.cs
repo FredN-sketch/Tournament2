@@ -65,4 +65,11 @@ public class TournamentRepository : ITournamentRepository
     {
         _context.TournamentDetails.Remove(tournamentDetails);    
     }
+    public async Task<int> CountGames(int tournamentId)
+    {
+        return await _context.TournamentDetails
+            .Where(t => t.Id == tournamentId)
+            .Select(t => t.Games.Count)
+            .FirstOrDefaultAsync();
+    }
 }

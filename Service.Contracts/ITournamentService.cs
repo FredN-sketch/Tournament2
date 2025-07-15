@@ -16,5 +16,6 @@ namespace Service.Contracts
         Task<(IEnumerable<TournamentDto> tournamentDtos, MetaData metaData)> GetAllAsync(TournamentRequestParams requestParams);
         Task<TournamentDto?> GetAsync(int id, bool includeGames = false);
         Task<bool> AnyAsync(int id);
+        Task<int> CountGames(int tournamentId);
     }
 }

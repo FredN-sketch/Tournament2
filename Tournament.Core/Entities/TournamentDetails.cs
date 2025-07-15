@@ -9,6 +9,7 @@ namespace Tournament.Core.Entities
 {
     public class TournamentDetails
     {
+        public static readonly int MaxGames = 10; // Maximum number of games in a tournament
         public int Id { get; set; }
         [Required(ErrorMessage = "Title is a required field.")]
         [MaxLength(30, ErrorMessage = "Maximum length for the Title is 30 characters.")]
