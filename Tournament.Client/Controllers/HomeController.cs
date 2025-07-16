@@ -27,7 +27,7 @@ namespace Tournament.Client.Controllers
         public async Task <IActionResult> Index()
         {
             var result = await SimpleGetAsync();
-            //var result2 = await SimpleGetAsync2();
+            var result2 = await SimpleGetAsync2();
 
             //var result3 = await GetWithRequestMessageAsync();
 
@@ -50,7 +50,7 @@ namespace Tournament.Client.Controllers
         }
         private async Task<IEnumerable<TournamentDto>> SimpleGetAsync2()
         {
-            throw new NotImplementedException();
+            return await httpClient.GetFromJsonAsync<IEnumerable<TournamentDto>>("api/TournamentDetails", new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
         private async Task<IEnumerable<TournamentDto>> GetWithRequestMessageAsync()
         {

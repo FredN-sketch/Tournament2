@@ -4,6 +4,8 @@ using AutoMapper;
 using Tournament.Core.Dto;
 using Service.Contracts;
 using Tournament.Core.Request;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace Tournament.Presentation.Controllers
 {
@@ -25,8 +27,12 @@ namespace Tournament.Presentation.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TournamentDto>>> GetTournamentDetails([FromQuery] TournamentRequestParams requestParams)
         {          
-            var tournamentDtos = await _serviceManager.TournamentService.GetAllAsync(requestParams);
-            return Ok(tournamentDtos);
+            //var tournamentDtos = await _serviceManager.TournamentService.GetAllAsync(requestParams);
+            //return Ok(tournamentDtos);
+            var pagedResult = await _serviceManager.TournamentService.GetAllAsync(requestParams);
+            Response.Headers.Append("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+
+            return Ok(pagedResult.tournamentDtos);
         }
 
         // GET: api/TournamentDetails/5
