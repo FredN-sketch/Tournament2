@@ -22,8 +22,7 @@ namespace Tournament.Api.Extensions
 
                 try
                 {
-                    var tournaments = SeedData.GenerateTournaments();
-                    //SeedData.GenerateTournaments();
+                    var tournaments = SeedData.GenerateTournaments();                  
                     db.AddRange(tournaments);
                     await db.SaveChangesAsync();
                 }
@@ -40,7 +39,6 @@ namespace Tournament.Api.Extensions
             services.AddScoped<IServiceManager, ServiceManager>();
             services.AddScoped<ITournamentService, TournamentService>();
             services.AddScoped<IGameService, GameService>();
-
         }
     }
 }

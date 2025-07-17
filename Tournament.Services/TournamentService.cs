@@ -47,7 +47,14 @@ namespace Tournament.Services
         {
             return await _uow.TournamentRepository.CountGames(tournamentId);
         }
-
+        public async Task<TournamentDto> PostTournament(TournamentDto dto)
+        {
+            var tournament = _mapper.Map<TournamentDetails>(dto);
+           
+            _uow.TournamentRepository.Add(tournament);
+            await _uow.CompleteAsync();
+            return _mapper.Map<TournamentDto>(tournament);
+        }
         // CRUD operations
         public void Add(TournamentDetails tournamentDetails)
         {

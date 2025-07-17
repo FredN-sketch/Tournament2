@@ -32,7 +32,7 @@ public class Program
 
         var app = builder.Build();
         app.ConfigureExceptionHandler();
-        await app.SeedDataAsync(); // Seed the database with initial data. To be implemented in the ApplicationBuilderExtensions class.
+        await app.SeedDataAsync(); // Seed the database with initial data. Implemented in the ApplicationBuilderExtensions class.
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

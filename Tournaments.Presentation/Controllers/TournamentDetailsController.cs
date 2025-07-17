@@ -81,23 +81,24 @@ namespace Tournament.Presentation.Controllers
 
         // POST: api/TournamentDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<TournamentDto>> PostTournamentDetails(TournamentDto dto)
-        //{
-        //    var tournamentDetails = _mapper.Map<TournamentDetails>(dto);
+        [HttpPost]
+        public async Task<ActionResult<TournamentDto>> PostTournamentDetails(TournamentDto dto)
+        {
+            //var tournamentDetails = _mapper.Map<TournamentDetails>(dto);
 
-        //    _uow.TournamentRepository.Add(tournamentDetails);
-        //    try
-        //    {
-        //        await _uow.CompleteAsync();
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(500);
-        //    }
-        //    var createdTournament = _mapper.Map<TournamentDto>(tournamentDetails);
-        //    return CreatedAtAction(nameof(GetTournamentDetails), new { id = tournamentDetails.Id }, createdTournament);
-        //}
+            //_uow.TournamentRepository.Add(tournamentDetails);
+            //try
+            //{
+            //    await _uow.CompleteAsync();
+            //}
+            //catch
+            //{
+            //    return StatusCode(500);
+            //}
+            //var createdTournament = _mapper.Map<TournamentDto>(tournamentDetails);
+            var createdTournament = await _serviceManager.TournamentService.PostTournament(dto);
+            return CreatedAtAction(nameof(GetTournamentDetails), new { id = createdTournament.Id }, createdTournament);
+        }
 
         // DELETE: api/TournamentDetails/5
         //[HttpDelete("{id}")]

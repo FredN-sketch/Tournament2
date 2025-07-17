@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using Tournament.Client.Clients;
 using Tournament.Client.Models;
@@ -29,9 +30,9 @@ namespace Tournament.Client.Controllers
             var result = await SimpleGetAsync();
             var result2 = await SimpleGetAsync2();
 
-            //var result3 = await GetWithRequestMessageAsync();
+            var result3 = await GetWithRequestMessageAsync();
 
-            //var result4 = await PostWithRequestMessageAsync();
+         //   var result4 = await PostWithRequestMessageAsync();
 
             //await PatchWithRequestMessageAsync();
             return View();
@@ -53,12 +54,32 @@ namespace Tournament.Client.Controllers
             return await httpClient.GetFromJsonAsync<IEnumerable<TournamentDto>>("api/TournamentDetails", new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
         private async Task<IEnumerable<TournamentDto>> GetWithRequestMessageAsync()
-        {
-            throw new NotImplementedException();
+        {         
+            return await tournamentClient.GetAsync<IEnumerable<TournamentDto>>("api/tournamentdetails");
         }
-        private async Task<IEnumerable<TournamentDto>> PostWithRequestMessageAsync()
+        private async Task<TournamentDto> PostWithRequestMessageAsync()
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/tournamentdetails");
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(json));
+            DateTime StartDate = DateTime.UtcNow;
+            var tournamentToCreate = new TournamentDto(StartDate)
+            {
+             //   Id = 0, // Assuming a default value for Id
+                Title = "Vinterturneringen+1",
+                StartDate = StartDate
+              //  EndDate = DateTime.UtcNow.AddDays(60),
+               // Games = null
+            };
+            var jsonCompany = JsonSerializer.Serialize(tournamentToCreate);
+            request.Content = new StringContent(jsonCompany);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(json);
+            var response = await httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var res = await response.Content.ReadAsStringAsync();
+            var tournamentDto = JsonSerializer.Deserialize<TournamentDto>(res, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            var location = response.Headers.Location;
+
+            return tournamentDto;
         }
 
         private async Task PatchWithRequestMessageAsync()
