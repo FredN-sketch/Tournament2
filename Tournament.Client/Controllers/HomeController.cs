@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Net.Http.Headers;
@@ -5,6 +6,7 @@ using System.Text.Json;
 using Tournament.Client.Clients;
 using Tournament.Client.Models;
 using Tournament.Core.Dto;
+using Tournament.Core.Entities;
 
 namespace Tournament.Client.Controllers
 {
@@ -32,9 +34,9 @@ namespace Tournament.Client.Controllers
 
             var result3 = await GetWithRequestMessageAsync();
 
-         //   var result4 = await PostWithRequestMessageAsync();
+        //    var result4 = await PostWithRequestMessageAsync();
 
-            //await PatchWithRequestMessageAsync();
+          //  await PatchWithRequestMessageAsync();
             return View();
         }
 
@@ -84,12 +86,27 @@ namespace Tournament.Client.Controllers
 
         private async Task PatchWithRequestMessageAsync()
         {
-            throw new NotImplementedException();
+            var patchDocument = new JsonPatchDocument<GameCreateDto>();
+            patchDocument.Replace(g => g.Title, "Spring Championship 0 Game 1x");
+           
+
+            var serializedPatchDoc = Newtonsoft.Json.JsonConvert.SerializeObject(patchDocument);
+
+            var request = new HttpRequestMessage(HttpMethod.Patch, "api/Games/1");
+
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(json));
+
+            request.Content = new StringContent(serializedPatchDoc);
+
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(json);
+
+            var response = await httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
         }
 
 
 
-       
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

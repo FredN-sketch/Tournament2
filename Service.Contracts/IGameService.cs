@@ -17,5 +17,8 @@ namespace Service.Contracts
         Task<bool> AnyAsync(int id);
         Task<GameDto> PostGame(GameCreateDto dto);
         Task CompleteAsync();
+        GameCreateDto MapGame(GameDto existingGame);
+        Task MapGameCreateDto(GameCreateDto dto, GameDto existingGame);
+        //public void Update(Game game);
     }
 }

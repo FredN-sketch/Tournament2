@@ -28,7 +28,7 @@ namespace Tournament.Services
             return await _uow.GameRepository.AnyAsync(id);
         }
 
-        
+
         public async Task<(IEnumerable<GameDto> gameDtos, MetaData metaData)> GetAllAsync(GameRequestParams requestParams)
         {
             var pagedList = await _uow.GameRepository.GetAllAsync(requestParams);
@@ -69,25 +69,80 @@ namespace Tournament.Services
             await _uow.CompleteAsync();
             return _mapper.Map<GameDto>(game);
         }
+        //public async Task<GameDto> PatchGame(int gameId, JsonPatchDocument<GameCreateDto> patchDoc)
+        //{
+        //    if (patchDoc == null)
+        //    {
+        //        return BadRequest("Invalid patch document.");
+        //    }
+        //    if (!await GameExistsAsync(gameId))
+        //    {
+        //        return NotFound("Game does not exist");
+        //    }
+        //    var existingGame = await _uow.GameRepository.GetAsync(gameId);
+        //    if (existingGame == null)
+        //    {
+        //        return NotFound("Game does not exist");
+        //    }
+        //    var dto = _mapper.Map<GameCreateDto>(existingGame);
+        //    patchDoc.ApplyTo(dto, ModelState);
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    _mapper.Map(dto, existingGame);
+        //    try
+        //    {
+        //        await _uow.CompleteAsync();
+        //    }
+        //    catch
+        //    {
+        //        return StatusCode(500);
+        //    }
+        //    return NoContent();
+        //}
         // CRUD operations
-        public void Add(Game game)
-        {
-            _uow.GameRepository.Add(game);
-            _uow.CompleteAsync();
-        }
-        public void Update(Game game)
-        {
-            _uow.GameRepository.Update(game);
-            _uow.CompleteAsync();
-        }
-        public void Remove(Game game)
-        {
-            _uow.GameRepository.Remove(game);
-            _uow.CompleteAsync();
-        }
+        //public void Add(Game game)
+        //{
+        //    _uow.GameRepository.Add(game);
+        //    _uow.CompleteAsync();
+        //}
+        //public void Update(Game game)
+        //{
+        //    _uow.GameRepository.Update(game);
+        //    _uow.CompleteAsync();
+        //}
+        //public void Remove(Game game)
+        //{
+        //    _uow.GameRepository.Remove(game);
+        //    _uow.CompleteAsync();
+        //}
 
         public async Task CompleteAsync()
         {
+            await _uow.CompleteAsync();
+        }
+        public GameCreateDto MapGame(GameDto gameDto)
+        {
+            Game game = _mapper.Map<Game>(gameDto);
+            GameCreateDto dto = _mapper.Map<GameCreateDto>(game);
+            return dto;
+        }
+        //public GameCreateDto MapGame(object existingGame)
+        //{
+        //    if (existingGame is Game game)
+        //    {
+        //        return MapGame(game);
+        //    }
+        //    throw new ArgumentException("Invalid game object type", nameof(existingGame));
+        //}
+        public async Task MapGameCreateDto(GameCreateDto dto, GameDto existingGame)
+        {
+            if (dto == null)
+            {
+                throw new ArgumentNullException(nameof(dto), "GameCreateDto cannot be null");
+            }
+            _mapper.Map(dto, existingGame);
             await _uow.CompleteAsync();
         }
     }

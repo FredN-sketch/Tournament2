@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Tournament.Core.Dto;
 
 namespace Tournament.Core.Entities
 {
@@ -17,5 +18,10 @@ namespace Tournament.Core.Entities
         public int TournamentDetailsId { get; set; }
         // Navigation property to TournamentDetails
         public TournamentDetails? TournamentDetails { get; set; }
+
+        public static explicit operator Game(GameDto v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

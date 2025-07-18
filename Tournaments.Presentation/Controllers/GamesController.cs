@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using System.Xml.XPath;
 using Tournament.Core.Dto;
 using Tournament.Core.Entities;
 using Tournament.Core.Repositories;
@@ -90,7 +92,7 @@ namespace Tournament.Presentation.Controllers
            
             return CreatedAtAction(nameof(GetGame), new { id = createdGame.Id }, createdGame);
         }
-      
+
 
         // DELETE: api/Games/5
         //[HttpDelete("{id}")]
@@ -114,39 +116,44 @@ namespace Tournament.Presentation.Controllers
 
         //    return NoContent();
         //}
-        //[HttpPatch("{gameId}")]
-        //public async Task<IActionResult> PatchGame(int gameId, [FromBody] JsonPatchDocument<GameCreateDto> patchDoc)
-        //{
-        //    if (patchDoc == null)
-        //    {
-        //        return BadRequest("Invalid patch document.");
-        //    }
-        //    if (!await GameExistsAsync(gameId))
-        //    {
-        //        return NotFound("Game does not exist");
-        //    }
-        //    var existingGame = await _uow.GameRepository.GetAsync(gameId);
-        //    if (existingGame == null)
-        //{
-        //    return NotFound("Game does not exist");
-        //}
-        //var dto = _mapper.Map<GameCreateDto>(existingGame);
-        //patchDoc.ApplyTo(dto, ModelState);
-        //if (!ModelState.IsValid)
-        //{
-        //    return BadRequest(ModelState);
-        //}
-        //_mapper.Map(dto, existingGame);
-        //try
-        //{
-        //    await _uow.CompleteAsync();
-        //}
-        //catch
-        //{
-        //    return StatusCode(500);
-        //}
-        //    return NoContent();
-        //}
+        [HttpPatch("{gameId}")]
+        public async Task<IActionResult> PatchGame(int gameId, [FromBody] JsonPatchDocument<GameCreateDto> patchDoc)
+        {
+            if (patchDoc == null)
+            {
+                return BadRequest("Invalid patch document.");
+            }
+            if (!await GameExistsAsync(gameId))
+            {
+                return NotFound("Game does not exist");
+            }
+            var existingGame = await _serviceManager.GameService.GetAsync(gameId);// _uow.GameRepository.GetAsync(gameId);
+            if (existingGame == null)
+            {
+                return NotFound("Game does not exist");
+            }
+
+            var dto = _serviceManager.GameService.MapGame(existingGame); //_mapper.Map<GameCreateDto>(existingGame);
+            //var dto =_mapper.Map<GameCreateDto>(existingGame);
+            //patchDoc.ApplyTo(dto, ModelState);
+            patchDoc.ApplyTo(dto);
+            TryValidateModel(dto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //_mapper.Map(dto, existingGame);
+            _serviceManager.GameService.MapGameCreateDto(dto, existingGame); //_mapper.Map<Game>(dto);
+            try
+            {
+                await _serviceManager.GameService.CompleteAsync();
+            }
+            catch
+            {
+                return StatusCode(500);
+            }
+            return NoContent();
+        }
 
         private async Task<bool> GameExistsAsync(int id)
         {      
