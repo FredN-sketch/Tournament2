@@ -36,7 +36,7 @@ namespace Tournament.Client.Controllers
 
         //    var result4 = await PostWithRequestMessageAsync();
 
-          //  await PatchWithRequestMessageAsync();
+            await PatchWithRequestMessageAsync();
             return View();
         }
 
@@ -87,7 +87,7 @@ namespace Tournament.Client.Controllers
         private async Task PatchWithRequestMessageAsync()
         {
             var patchDocument = new JsonPatchDocument<GameCreateDto>();
-            patchDocument.Replace(g => g.Title, "Spring Championship 0 Game 1x");
+            patchDocument.Replace(g => g.Title, "Spring Championship 0 Game..1x");
            
 
             var serializedPatchDoc = Newtonsoft.Json.JsonConvert.SerializeObject(patchDocument);

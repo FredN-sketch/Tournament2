@@ -127,7 +127,7 @@ namespace Tournament.Presentation.Controllers
             {
                 return NotFound("Game does not exist");
             }
-            var existingGame = await _serviceManager.GameService.GetAsync(gameId);// _uow.GameRepository.GetAsync(gameId);
+            Game existingGame = await _serviceManager.GameService.GetGameAsync(gameId);// _uow.GameRepository.GetAsync(gameId);
             if (existingGame == null)
             {
                 return NotFound("Game does not exist");
@@ -143,15 +143,15 @@ namespace Tournament.Presentation.Controllers
                 return BadRequest(ModelState);
             }
             //_mapper.Map(dto, existingGame);
-            _serviceManager.GameService.MapGameCreateDto(dto, existingGame); //_mapper.Map<Game>(dto);
-            try
-            {
-                await _serviceManager.GameService.CompleteAsync();
-            }
-            catch
-            {
-                return StatusCode(500);
-            }
+            await _serviceManager.GameService.MapGameCreateDto(dto, existingGame); //_mapper.Map<Game>(dto);
+            //try
+            //{
+            //    await _serviceManager.GameService.CompleteAsync();
+            //}
+            //catch
+            //{
+            //    return StatusCode(500);
+            //}
             return NoContent();
         }
 

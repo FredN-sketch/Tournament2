@@ -56,6 +56,15 @@ namespace Tournament.Services
             }
             return _mapper.Map<GameDto>(await _uow.GameRepository.GetAsync(title));
         }
+        public async Task<Game?> GetGameAsync(int id)
+        {
+            var game = await _uow.GameRepository.GetAsync(id);
+            if (game == null)
+            {
+                throw new Tournament.Core.Exceptions.GameNotFoundException(id);
+            }
+            return (game);
+        }
 
         public async Task<GameDto> PostGame(GameCreateDto dto)
         {
@@ -122,9 +131,8 @@ namespace Tournament.Services
         {
             await _uow.CompleteAsync();
         }
-        public GameCreateDto MapGame(GameDto gameDto)
-        {
-            Game game = _mapper.Map<Game>(gameDto);
+        public GameCreateDto MapGame(Game game)
+        {           
             GameCreateDto dto = _mapper.Map<GameCreateDto>(game);
             return dto;
         }
@@ -136,13 +144,15 @@ namespace Tournament.Services
         //    }
         //    throw new ArgumentException("Invalid game object type", nameof(existingGame));
         //}
-        public async Task MapGameCreateDto(GameCreateDto dto, GameDto existingGame)
+        public async Task MapGameCreateDto(GameCreateDto dto, Game existingGame)
         {
             if (dto == null)
             {
                 throw new ArgumentNullException(nameof(dto), "GameCreateDto cannot be null");
             }
             _mapper.Map(dto, existingGame);
+           
+            _uow.GameRepository.Update(existingGame);
             await _uow.CompleteAsync();
         }
     }

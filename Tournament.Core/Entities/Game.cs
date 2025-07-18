@@ -19,9 +19,6 @@ namespace Tournament.Core.Entities
         // Navigation property to TournamentDetails
         public TournamentDetails? TournamentDetails { get; set; }
 
-        public static explicit operator Game(GameDto v)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
